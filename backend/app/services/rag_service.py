@@ -5,6 +5,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.docstore.document import Document
+from langchain.prompts import PromptTemplate
 from app.config import settings
 
 # Try to import from langchain_community, fall back to langchain if not available
@@ -137,7 +138,7 @@ class RAGService:
         # Create retrieval QA chain
         if settings.OPENAI_API_KEY:
             llm = ChatOpenAI(
-                temperature=0,
+                temperature=0.3,
                 model_name="gpt-3.5-turbo",
                 openai_api_key=settings.OPENAI_API_KEY
             )
@@ -150,11 +151,30 @@ class RAGService:
             sources = [{"filename": doc.metadata.get("filename", "unknown"), "content": doc.page_content[:200]} for doc in docs]
             return answer, sources
 
+        # Custom prompt template for better multilingual support
+        prompt_template = """You are an AI assistant helping students understand their class materials. Use the following pieces of context from the class materials to answer the question at the end.
+
+If the context is in a specific language (like Persian/Farsi, Arabic, etc.), respond in the SAME language as the question. Provide detailed, helpful answers based on the context provided.
+
+If you don't know the answer from the context, say you don't have enough information to answer the question.
+
+Context from class materials:
+{context}
+
+Question: {question}
+
+Answer:"""
+
+        PROMPT = PromptTemplate(
+            template=prompt_template, input_variables=["context", "question"]
+        )
+
         qa_chain = RetrievalQA.from_chain_type(
             llm=llm,
             chain_type="stuff",
             retriever=vectorstore.as_retriever(search_kwargs={"k": 4}),
-            return_source_documents=True
+            return_source_documents=True,
+            chain_type_kwargs={"prompt": PROMPT}
         )
 
         result = qa_chain({"query": question})

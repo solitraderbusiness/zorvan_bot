@@ -5,6 +5,9 @@ import whisper
 from pathlib import Path
 from app.config import settings
 
+# Suppress all UserWarnings globally (including FP16 warning from Whisper)
+warnings.filterwarnings("ignore", category=UserWarning, module="whisper")
+
 
 class TranscriptionService:
     """Service for transcribing audio files."""
