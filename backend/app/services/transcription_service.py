@@ -1,4 +1,4 @@
-"""Audio transcription service using Whisper."""
+"""Audio transcription service using OpenAI Whisper API."""
 import os
 from pathlib import Path
 from openai import OpenAI
