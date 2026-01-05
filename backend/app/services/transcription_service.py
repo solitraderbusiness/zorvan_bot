@@ -10,9 +10,14 @@ class TranscriptionService:
 
     def __init__(self):
         """Initialize the transcription service."""
-        self.client = None
-        if settings.OPENAI_API_KEY:
-            self.client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        self._client = None
+
+    @property
+    def client(self):
+        """Lazy-load the OpenAI client."""
+        if self._client is None and settings.OPENAI_API_KEY:
+            self._client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        return self._client
 
     def transcribe_audio(self, audio_path: str) -> tuple:
         """
