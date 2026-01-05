@@ -163,7 +163,7 @@ export function ClassPage() {
                     />
                   </div>
                   <p className="text-sm text-gray-600 mt-1">
-                    Uploading... {uploadProgress}%
+                    {uploadProgress < 100 ? `Uploading... ${uploadProgress}%` : 'Processing audio (this may take several minutes)...'}
                   </p>
                 </div>
               )}
