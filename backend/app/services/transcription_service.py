@@ -5,7 +5,8 @@ import whisper
 from pathlib import Path
 from app.config import settings
 
-# Suppress all UserWarnings globally (including FP16 warning from Whisper)
+# Suppress FP16 warning from Whisper - must be done before any Whisper imports
+warnings.filterwarnings("ignore", message="FP16 is not supported on CPU")
 warnings.filterwarnings("ignore", category=UserWarning, module="whisper")
 
 
