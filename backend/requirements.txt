@@ -9,7 +9,8 @@ alembic==1.13.1
 
 # Authentication & Security
 python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
+passlib==1.7.4
+bcrypt==4.0.1
 python-dotenv==1.0.0
 
 # AI & ML
@@ -17,6 +18,7 @@ openai-whisper==20231117
 openai==1.10.0
 langchain==0.1.4
 langchain-openai==0.0.5
+langchain-community==0.0.13
 chromadb==0.4.22
 sentence-transformers==2.3.1
 pypdf2==3.0.1

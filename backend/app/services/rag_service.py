@@ -3,10 +3,17 @@ import os
 from typing import List, Tuple
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 from langchain.docstore.document import Document
 from app.config import settings
+
+# Try to import from langchain_community, fall back to langchain if not available
+try:
+    from langchain_community.vectorstores import Chroma
+    from langchain_community.embeddings import HuggingFaceEmbeddings
+except ImportError:
+    from langchain.vectorstores import Chroma
+    from langchain.embeddings import HuggingFaceEmbeddings
 
 
 class RAGService:
@@ -28,7 +35,6 @@ class RAGService:
                 self.embeddings = OpenAIEmbeddings(openai_api_key=settings.OPENAI_API_KEY)
             else:
                 # Fallback to sentence transformers if no OpenAI key
-                from langchain.embeddings import HuggingFaceEmbeddings
                 self.embeddings = HuggingFaceEmbeddings(
                     model_name="sentence-transformers/all-MiniLM-L6-v2"
                 )
