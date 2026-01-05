@@ -39,7 +39,7 @@ class TranscriptionService:
 
         # Suppress FP16 warning during transcription
         with warnings.catch_warnings():
-            warnings.filterwarnings("ignore", category=UserWarning)
+            warnings.simplefilter("ignore")
             result = self.model.transcribe(audio_path)
 
         text = result["text"]
