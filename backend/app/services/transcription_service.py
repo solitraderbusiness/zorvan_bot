@@ -36,7 +36,12 @@ class TranscriptionService:
 
         print(f"Transcribing audio file: {audio_path}")
         print("Note: Audio transcription on CPU may take several minutes depending on file length...")
-        result = self.model.transcribe(audio_path)
+
+        # Suppress FP16 warning during transcription
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message="FP16 is not supported on CPU")
+            result = self.model.transcribe(audio_path)
+
         text = result["text"]
 
         # Save transcription
