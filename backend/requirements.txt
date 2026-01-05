@@ -14,16 +14,13 @@ bcrypt==4.0.1
 python-dotenv==1.0.0
 
 # AI & ML
-openai-whisper==20231117
-openai==1.10.0
+openai==1.35.0
 langchain==0.1.20
-langchain-openai==0.0.8
+langchain-openai==0.1.8
 langchain-community==0.0.38
 chromadb==0.4.24
 sentence-transformers==2.3.1
 pypdf2==3.0.1
-torch==2.2.0
-torchaudio==2.2.0
 
 # Utils
 pydantic==2.5.3
