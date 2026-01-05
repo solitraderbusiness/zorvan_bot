@@ -39,7 +39,7 @@ class TranscriptionService:
 
         # Suppress FP16 warning during transcription
         with warnings.catch_warnings():
-            warnings.filterwarnings("ignore", message="FP16 is not supported on CPU")
+            warnings.filterwarnings("ignore", category=UserWarning)
             result = self.model.transcribe(audio_path)
 
         text = result["text"]
